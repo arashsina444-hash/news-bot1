@@ -1,25 +1,28 @@
 name: News Bot
 
 on:
-  workflow_dispatch:      # اجرای دستی
-  schedule:
-    - cron: '0 */6 * * *' # اجرای خودکار هر ۶ ساعت
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Install dependencies
         run: pip install feedparser
 
       - name: Run script
         run: python news.py
+
+      - name: Upload file
+        uses: actions/upload-artifact@v4
+        with:
+          name: news-file
+          path: news.txt
