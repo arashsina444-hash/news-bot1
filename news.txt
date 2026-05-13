@@ -1,32 +1,122 @@
 Latest Tech News
 
-The Boring Part of Bell Labs
-https://flipso.com/p/74dvz1hl5?ref=rss
----------------------
-Your Eyes Will Fool You
-https://flipso.com/p/o6ee3yvdi?ref=rss
----------------------
-Fully Preserving Fisher-Price Pixter
-https://flipso.com/p/ijt0427fz?ref=rss
----------------------
-The airplane oath
-https://flipso.com/p/4xgtejytq?ref=rss
----------------------
-Chinese AI engineers are Silicon Valley’s new power players
-https://flipso.com/p/el2eujdr0?ref=rss
----------------------
-New ultra stainless steel could make seawater hydrogen cheaper
-https://flipso.com/p/t9z18037h?ref=rss
----------------------
-Search and Rescue and Me
-https://flipso.com/p/1xg3lyubv?ref=rss
----------------------
-Wonderful Life
-https://flipso.com/p/yca132w8t?ref=rss
----------------------
-The vi family
-https://flipso.com/p/mcokj6lgb?ref=rss
----------------------
-Mice Human Speech.Html
-https://flipso.com/p/n6y1narus?ref=rss
----------------------
+Title: The Boring Part of Bell Labs
+Summary: A conversation with a former Bell Labs employee about the applied side of the company: PBX systems, queueing simulations, inventory control, and practical tools like a slide rule for sales estimates. It also touches on Bell Labs’ One Year On Campus program, management culture, hiring, and how the Holmdel division supported the famous research operation. [acesounderglass.com]
+Link: https://flipso.com/p/74dvz1hl5?ref=rss
+------------------------------------------------------------
+Title: Your Eyes Will Fool You
+Summary: A photo inside a steel tube column creates an optical illusion: the tube looks oval, but the effect comes from a plate welded through the HSS and the way the interior recedes from view. [oldstructures.com]
+Link: https://flipso.com/p/o6ee3yvdi?ref=rss
+------------------------------------------------------------
+Title: Fully Preserving Fisher-Price Pixter
+Summary: A deep reverse-engineering and preservation writeup covering the Fisher-Price Pixter line, including hardware analysis, ROM dumping, emulation, file formats, and game preservation for nearly the full platform. [dmitry.gr]
+Link: https://flipso.com/p/ijt0427fz?ref=rss
+------------------------------------------------------------
+Title: The airplane oath
+Summary: A near-disaster can force a painful clarity about what matters and what isn’t working. Seth Godin reflects on a friend’s airplane emergency and the oath she made to stop living for other people’s approval and commit to work that mattered to her. The larger point: you don’t need a crisis to wake up, choose differently, and make a promise you intend to keep. [seths.blog]
+Link: https://flipso.com/p/4xgtejytq?ref=rss
+------------------------------------------------------------
+Title: Chinese AI engineers are Silicon Valley’s new power players
+Summary: Chinese-born tech workers have long shaped Silicon Valley, but the AI boom has pushed a new generation of researchers, founders, and executives to the center of the industry. [restofworld.org]
+Link: https://flipso.com/p/el2eujdr0?ref=rss
+------------------------------------------------------------
+Title: New ultra stainless steel could make seawater hydrogen cheaper
+Summary: Researchers at the University of Hong Kong developed a stainless steel that forms a second protective layer and resists corrosion in high-voltage seawater electrolysis. The alloy could help replace expensive titanium parts in green hydrogen systems and lower costs, though it still needs further engineering before widespread industrial use. [sciencedaily.com]
+Link: https://flipso.com/p/t9z18037h?ref=rss
+------------------------------------------------------------
+Title: Search and Rescue and Me
+Summary: I trained to track down missing people in the wilderness, and the work changed how I see my own life, my children, and what it means to be a mom. [thecut.com]
+Link: https://flipso.com/p/1xg3lyubv?ref=rss
+------------------------------------------------------------
+Title: Wonderful Life
+Summary: A reflective essay on memory, how songs can unlock the past, and the strange way present moments reshape older ones. A radio tune on the road leads to recollections of a Houston grocery store, a family visit, and the emotional pull of remembering something just out of reach. [theamericanscholar.org]
+Link: https://flipso.com/p/yca132w8t?ref=rss
+------------------------------------------------------------
+Title: The vi family
+Summary: A curated list of vi and vi-inspired editors, from the original vi and early clones like Elvis and STevie to Vim, nvi, BusyBox vi, Neovim, and newer forks and modal editors. [lpar.ath0.com]
+Link: https://flipso.com/p/mcokj6lgb?ref=rss
+------------------------------------------------------------
+Title: Mice Human Speech.Html
+Summary: https://phys.org/news/2026-05-mice-human-speech.html [phys.org]
+Link: https://flipso.com/p/n6y1narus?ref=rss
+------------------------------------------------------------
+Title: The Akkadian Empire
+Summary: The Akkadian Empire was one of the first centralized states, arising in ancient Mesopotamia under Sargon of Akkad. It unified Sumerian city-states, expanded across much of the region, and later collapsed amid rebellions, invasions, and drought. [lflank.wordpress.com]
+Link: https://flipso.com/p/vkekwy0ci?ref=rss
+------------------------------------------------------------
+Title: Chaos Unleashed: When Irrational Makes Perfect Sense
+Summary: Social trust erodes when fairness and honesty disappear, and anger can turn to chaos when people feel redress is blocked. Charles Hugh Smith argues that what looks irrational in periods of breakdown can follow a deeply human emotional progression, moving from denial to anger and, if unresolved, toward retribution. [charleshughsmith.blogspot.com]
+Link: https://flipso.com/p/x9qrfedgz?ref=rss
+------------------------------------------------------------
+Title: They Photographed an Execution in Bosnia. Did They Influence the Killer?
+Summary: A three-year investigation examines how Reuters photos of a Bosnian war crime were made, why they were published, and the controversy they later provoked. [newlinesmag.com]
+Link: https://flipso.com/p/40c8qzy44?ref=rss
+------------------------------------------------------------
+Title: Referer reality
+Summary: On web analytics, email and app traffic often shows up as Direct or Unknown because many apps don’t send a Referrer header. Robin Sloan argues that adding a custom query string to outgoing links can be a useful courtesy, making the source legible for site owners without relying on analytics. [robinsloan.com]
+Link: https://flipso.com/p/qfz79bvu2?ref=rss
+------------------------------------------------------------
+Title: These Wild Young People
+Summary: Asterisks issue page for a culture piece by Tessa Augsberger, Elan Kluger, and Rufus Knuppel. The page currently says “Coming soon,” so there’s no article text yet. [asteriskmag.com]
+Link: https://flipso.com/p/j2h844ivh?ref=rss
+------------------------------------------------------------
+Title: How to Make Your Text Look Futuristic
+Summary: A playful typography breakdown of the recurring design tricks used to make movie titles and logos feel futuristic, from slanted sans-serifs and exaggerated kerning to brushed metal, embossing, and star fields. [typesetinthefuture.com]
+Link: https://flipso.com/p/24lpen6gi?ref=rss
+------------------------------------------------------------
+Title: Saving New Orleans Is Not Optional
+Summary: A new study suggests we should simply give up on the city's long-term future and begin to relocate the population. This is a morally indefensible proposal. New Orleans can and must be saved. [currentaffairs.org]
+Link: https://flipso.com/p/pa3xlu1ex?ref=rss
+------------------------------------------------------------
+Title: The slippery protein problem
+Summary: How a new class of drugs is beginning to make previously undruggable proteins, including RAS, accessible in pancreatic cancer and other hard-to-treat cancers. [worksinprogress.co]
+Link: https://flipso.com/p/hcf6sixt0?ref=rss
+------------------------------------------------------------
+Title: Tell New York Times, The Atlantic, and USA Today to keep journalists’ work in the…
+Summary: A petition urging major news outlets to allow the Internet Archive’s Wayback Machine to keep preserving their reporting, so journalism remains accessible for fact-checking and historical record. [savethearchive.com]
+Link: https://flipso.com/p/xib6kivwp?ref=rss
+------------------------------------------------------------
+Title: SOM's supertall 175 Park Avenue gets updated permits
+Summary: Skidmore, Owings & Merrill has updated the design for 175 Park Avenue, a 1,581-foot mixed-use tower planned next to Grand Central Terminal in Midtown Manhattan. The project would replace the Grand Hyatt hotel and include offices, a hotel, stepped setbacks with landscaped terraces, and a new transit hall expanding circulation at Grand Central. [archinect.com]
+Link: https://flipso.com/p/omedtcx6a?ref=rss
+------------------------------------------------------------
+Title: How Kraftwerk’s 1976 track Radioactivity became an anti-nuclear anthem
+Summary: Kraftwerk’s 1976 single grew from a pioneering electronic track into a later anti-nuclear statement, especially in its 1991 reworking. Fifty years on, it remains one of the band’s most politically charged and influential songs. [bbc.com]
+Link: https://flipso.com/p/uofpdvra2?ref=rss
+------------------------------------------------------------
+Title: Harrison Ford tells grads to find purpose in a messy world
+Summary: At Arizona State University’s commencement, Harrison Ford urged graduates to turn their talent and ambition toward meaningful work, especially in response to climate and conservation challenges. He said purpose can come from using your passions to build, lead, and help others. [conservation.org]
+Link: https://flipso.com/p/xr7914gxw?ref=rss
+------------------------------------------------------------
+Title: Attending Cornell While Your Father Is in Ice Detention
+Summary: Klarissa López Guillen’s father was detained by ICE during her second semester at Cornell. She’s had to drop a class, pick up a job, and navigate a complicated financial aid system in order to remain enrolled in the university. [collegetownmagazine.com]
+Link: https://flipso.com/p/p1zrumtng?ref=rss
+------------------------------------------------------------
+Title: On Rendering the Sky, Sunsets, and Planets
+Summary: A deep dive into real-time atmospheric rendering in the browser with shaders, covering raymarching, Rayleigh and Mie scattering, ozone absorption, and how to extend the same model from a sky dome to a planet atmosphere. [blog.maximeheckel.com]
+Link: https://flipso.com/p/cpqwmavfm?ref=rss
+------------------------------------------------------------
+Title: ‘I couldn’t breathe’: France’s killer seaweed and the fight over Brittany’s beaches
+Summary: After deaths on Brittany’s beaches, a bereaved family spent years trying to prove that rotting seaweed releasing hydrogen sulphide was to blame. The story follows the people, lawsuits, and official resistance around France’s recurring toxic algal blooms. [theguardian.com]
+Link: https://flipso.com/p/i9opay88g?ref=rss
+------------------------------------------------------------
+Title: The Return of Culture
+Summary: Robin Hanson examines changing influence among capital, culture, and states across historical periods, using LLM-based estimates to argue that culture has recently regained dominance after a long period of state power. [overcomingbias.com]
+Link: https://flipso.com/p/lbjcdsjj0?ref=rss
+------------------------------------------------------------
+Title: Introducing The Moth Story Map
+Summary: The Moth Education team introduces the Story Map, a five-part structure for shaping a Moth story, and shows how it works in a video featuring Dante Jackson’s story “The Prom.” The post also includes information about applications for the All City residency for NYC high school students and the Moth Teacher Institute for educators. [themoth.org]
+Link: https://flipso.com/p/68y8femc6?ref=rss
+------------------------------------------------------------
+Title: Schliemann found Troy by destroying it
+Summary: Heinrich Schliemann’s 1873 dig at Hisarlık uncovered a hoard he claimed as Priam’s Treasure, but his trench cut through multiple ancient layers and missed the Bronze Age city most likely tied to Homer’s Troy. The gold was smuggled out of the Ottoman Empire, fought over in court, then spent decades moving between Berlin, a Berlin flak tower, and a Moscow museum basement. [storica.club]
+Link: https://flipso.com/p/zxqvwc6ao?ref=rss
+------------------------------------------------------------
+Title: The Surprisingly Long Life of the Vacuum Tube
+Summary: Vacuum tubes were once a foundational technology for radios, telephones, TVs, early computers, X-ray machines, radar, and microwave generation. Despite being largely replaced by semiconductors, several tube-based technologies still matter today, including magnetrons, gas-discharge devices, and gyrotrons. [construction-physics.com]
+Link: https://flipso.com/p/gqr0m3w2j?ref=rss
+------------------------------------------------------------
+Title: Meet the Ham Sandwich Salad
+Summary: A romaine salad with ham, cornichons, croutons, Parmesan, and a mustardy mayo dressing, with crisped prosciutto added on top for extra crunch. [tastecooking.com]
+Link: https://flipso.com/p/1w80yqnw0?ref=rss
+------------------------------------------------------------
