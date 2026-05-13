@@ -1,19 +1,16 @@
-name: News Bot
+name: Run News Bot
 
 on:
-  workflow_dispatch: # اجرای دستی
+  workflow_dispatch:  # این خط جادویی است که دکمه را ظاهر می‌کند
   schedule:
-    - cron: '0 */6 * * *' # اجرای خودکار هر 6 ساعت
+    - cron: '0 * * * *' # هر ساعت اجرا شود
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_TOKEN }} # استفاده از توکن برای دسترسی به ریپو
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,27 +18,25 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: pip install feedparser openai
+        run: |
+          pip install feedparser openai
 
-      - name: Run script and generate news.txt
+      - name: Run news scraper
         run: python news.py
 
-      -       - name: Generate AI posts (Rubika)
+      - name: Generate AI posts (Rubika)
         env:
           GAPGPT_API_KEY: ${{ secrets.GAPGPT_API_KEY }}
         run: |
-          echo "🧩 Testing API key..."
-          echo "Key length:" ${#GAPGPT_API_KEY}
-          echo "Running processor..."
-          python processor.py || (echo "❌ Processor failed with error $?"; exit 1)
+          echo "🚀 Starting AI Generation..."
+          python processor.py
 
-
-      - name: Commit files to repository
+      - name: Commit and Push changes
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add news.txt rubika_posts.txt
           git commit -m "Update news and AI posts" || echo "No changes to commit"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          git push https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
