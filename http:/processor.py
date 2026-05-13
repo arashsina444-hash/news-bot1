@@ -1,61 +1,69 @@
 import os
 from openai import OpenAI
 
+# دریافت کلیه متغیرهای محیطی برای اطمینان
+api_key = os.getenv("GAPGPT_API_KEY")
+
+if not api_key:
+    print("❌ خطا: کلید API در Secrets یافت نشد. لطفاً تنظیمات GitHub Secrets را چک کنید.")
+    exit(1)
+
 client = OpenAI(
     base_url="https://api.gapgpt.app/v1",
-    api_key=os.getenv("GAPGPT_API_KEY")
+    api_key=api_key
 )
 
 def generate_post(title, summary, link):
-
-    prompt = f"""
-این خبر را تبدیل به یک پست کانال روبیکا کن.
-
-تیتر خبر:
-{title}
-
-خلاصه:
-{summary}
+    try:
+        prompt = f"""
+این خبر را به یک پست جذاب برای کانال روبیکا تبدیل کن:
+تیتر: {title}
+خلاصه: {summary}
+لینک منبع: {link}
 
 قوانین:
-- متن فارسی روان
-- حدود یک پاراگراف کامل
-- اول یک تیتر جذاب
-- آخر لینک منبع
-
-لینک:
-{link}
+- استفاده از ایموجی‌های مناسب
+- لحن خبری و جذاب
+- ذکر لینک منبع در انتها
 """
+        response = client.chat.completions.create(
+            model="gpt-chat-5.3-latest",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"❌ خطا در ارتباط با هوش مصنوعی: {str(e)}"
 
-    response = client.chat.completions.create(
-        model="gpt-chat-5.3-latest",
-        messages=[{"role": "user", "content": prompt}]
-    )
+# بررسی وجود فایل ورودی
+if not os.path.exists("news.txt"):
+    print("❌ خطا: فایل news.txt پیدا نشد!")
+    exit(1)
 
-    return response.choices[0].message.content
+with open("news.txt", "r", encoding="utf-8") as f:
+    content = f.read()
 
+# جدا کردن اخبار بر اساس جداکننده -----
+entries = [e.strip() for e in content.split("-----") if e.strip()]
 
-posts = []
+processed_posts = []
 
-with open("news.txt","r",encoding="utf-8") as f:
-    data = f.read().split("-----")
+print(f"🔍 در حال پردازش {len(entries)} خبر...")
 
-for item in data:
+for entry in entries:
+    lines = entry.split("\n")
+    if len(lines) >= 3:
+        # پاکسازی متن خطوط (حذف پیشوندهای احتمالی)
+        title = lines[0].replace("Title:", "").strip()
+        summary = lines[1].replace("Summary:", "").strip()
+        link = lines[2].replace("Link:", "").strip()
+        
+        print(f"✍️ در حال تولید پست برای: {title[:50]}...")
+        post = generate_post(title, summary, link)
+        processed_posts.append(post)
 
-    lines = item.strip().split("\n")
+# ذخیره نهایی
+with open("rubika_posts.txt", "w", encoding="utf-8") as f:
+    for p in processed_posts:
+        f.write(p + "\n\n" + "="*30 + "\n\n")
 
-    if len(lines) < 3:
-        continue
-
-    title = lines[0]
-    summary = lines[1]
-    link = lines[2]
-
-    post = generate_post(title,summary,link)
-
-    posts.append(post)
-
-with open("rubika_posts.txt","w",encoding="utf-8") as f:
-
-    for p in posts:
-        f.write(p+"\n\n")
+print("✅ عملیات با موفقیت تمام شد و فایل rubika_posts.txt ساخته شد.")
