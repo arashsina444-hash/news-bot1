@@ -26,10 +26,15 @@ jobs:
       - name: Run script and generate news.txt
         run: python news.py
 
-      - name: Generate AI posts (Rubika)
+      -       - name: Generate AI posts (Rubika)
         env:
           GAPGPT_API_KEY: ${{ secrets.GAPGPT_API_KEY }}
-        run: python processor.py
+        run: |
+          echo "🧩 Testing API key..."
+          echo "Key length:" ${#GAPGPT_API_KEY}
+          echo "Running processor..."
+          python processor.py || (echo "❌ Processor failed with error $?"; exit 1)
+
 
       - name: Commit files to repository
         run: |
