@@ -2,7 +2,11 @@ import os
 from openai import OpenAI
 
 # دریافت کلیه متغیرهای محیطی برای اطمینان
+
 api_key = os.getenv("GAPGPT_API_KEY")
+print("🚀 Debug mode active")
+print("API Key found:", bool(os.getenv("GAPGPT_API_KEY")))
+print("Base URL:", "https://api.gapgpt.app/v1")
 
 if not api_key:
     print("❌ خطا: کلید API در Secrets یافت نشد. لطفاً تنظیمات GitHub Secrets را چک کنید.")
