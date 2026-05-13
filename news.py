@@ -1,6 +1,6 @@
 import feedparser
 
-RSS_URL = "https://feeds.reuters.com/reuters/technologyNews"
+RSS_URL = "https://feeds.feedburner.com/reuters/technologyNews"
 
 def get_news():
     feed = feedparser.parse(RSS_URL)
