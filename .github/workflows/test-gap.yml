@@ -1,0 +1,52 @@
+name: Test GapGPT API
+
+on:
+  workflow_dispatch:   # فقط دستی اجرا میشه، cron نداره
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test GapGPT API connection
+        run: |
+          echo "============================================"
+          echo "Testing GapGPT API from GitHub Actions..."
+          echo "Endpoint: https://api.gapgpt.app/v1"
+          echo "Model: gpt-5.3-chat-latest"
+          echo "============================================"
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            --connect-timeout 15 \
+            --max-time 45 \
+            -H "Authorization: Bearer ${{ secrets.GAPGPT_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "model": "gpt-5.3-chat-latest",
+              "messages": [
+                {"role": "user", "content": "Say exactly these words in Persian: سلام از گیتهاب"}
+              ],
+              "max_tokens": 50
+            }' \
+            "https://api.gapgpt.app/v1/chat/completions")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          
+          echo ""
+          echo "HTTP Status Code: $HTTP_CODE"
+          echo "----------------------------------------"
+          echo "Response Body:"
+          echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
+          echo "============================================"
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo ""
+            echo "✅ SUCCESS! GapGPT API works from GitHub Actions!"
+            echo "We can continue with the current architecture."
+          else
+            echo ""
+            echo "❌ FAILED! GapGPT API is NOT accessible from GitHub."
+            echo "HTTP Code: $HTTP_CODE"
+            echo "We need to switch to GitHub Models."
+            exit 1
+          fi
