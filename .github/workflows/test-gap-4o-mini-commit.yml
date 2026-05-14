@@ -1,0 +1,279 @@
+name: "🧪 تست gpt-4o-mini و ذخیره در ریپو"
+
+on:
+  workflow_dispatch:  # فقط دستی اجرا بشه
+
+jobs:
+  test-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # برای commit کردن نیازه
+    
+    steps:
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: "📡 تست مدل gpt-4o-mini"
+        id: test_model
+        run: |
+          # ================================
+          # پیکربندی
+          # ================================
+          API_URL="https://api.gapgpt.app/v1/chat/completions"
+          MODEL="gpt-4o-mini"
+
+          # خبر ورودی
+          NEWS_TEXT="قیمت سکه امامی امروز در بازار تهران با افزایش ۲ میلیون و ۸۰۰ هزار تومانی نسبت به روز گذشته، وارد کانال ۵۸ میلیون تومان شد. قیمت هر گرم طلای ۱۸ عیار نیز با رشد ۱.۵ درصدی به ۴ میلیون و ۸۵۰ هزار تومان رسید. کارشناسان دلیل این افزایش را نوسانات بازار ارز و افزایش تقاضا در آستانه تعطیلات عنوان کردند."
+
+          # System Prompt
+          SYSTEM_PROMPT="تو یک دستیار خبری حرفه‌ای برای ربات روبیکا هستی. لطفاً خبر زیر را به صورت خلاصه، جذاب و در **حداکثر ۳ خط** بازنویسی کن. فقط متن بازنویسی‌شده را برگردان و هیچ توضیح اضافه‌ای نده."
+
+          # ================================
+          # ارسال درخواست
+          # ================================
+          echo "⌛ در حال ارسال درخواست به GapGPT (مدل: $MODEL)..."
+
+          PAYLOAD=$(jq -n \
+            --arg model "$MODEL" \
+            --arg system "$SYSTEM_PROMPT" \
+            --arg user "$NEWS_TEXT" \
+            '{
+              model: $model,
+              messages: [
+                {role: "system", content: $system},
+                {role: "user", content: $user}
+              ],
+              temperature: 0.7,
+              max_tokens: 500
+            }')
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$API_URL" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.GAPGPT_API_KEY }}" \
+            -d "$PAYLOAD" \
+            --connect-timeout 30 \
+            --max-time 120)
+
+          # جدا کردن status code از body
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          # ================================
+          # استخراج اطلاعات
+          # ================================
+          CONTENT=$(echo "$BODY" | jq -r '.choices[0].message.content' 2>/dev/null)
+          FINISH_REASON=$(echo "$BODY" | jq -r '.choices[0].finish_reason' 2>/dev/null)
+          MODEL_RETURNED=$(echo "$BODY" | jq -r '.model' 2>/dev/null)
+          TOTAL_TOKENS=$(echo "$BODY" | jq -r '.usage.total_tokens' 2>/dev/null)
+          PROMPT_TOKENS=$(echo "$BODY" | jq -r '.usage.prompt_tokens' 2>/dev/null)
+          COMPLETION_TOKENS=$(echo "$BODY" | jq -r '.usage.completion_tokens' 2>/dev/null)
+          REASONING_TOKENS=$(echo "$BODY" | jq -r '.usage.completion_tokens_details.reasoning_tokens // 0' 2>/dev/null)
+
+          # ================================
+          # بررسی کیفیت
+          # ================================
+          # بررسی فارسی بودن
+          if echo "$CONTENT" | grep -qP '[\x{0600}-\x{06FF}]' 2>/dev/null || \
+             echo "$CONTENT" | grep -q '[آ-ی]' 2>/dev/null; then
+            PERSIAN_CHECK="✅ فارسی"
+          else
+            PERSIAN_CHECK="❌ غیرفارسی"
+          fi
+
+          # بررسی finish_reason
+          if [ "$FINISH_REASON" = "stop" ]; then
+            FINISH_CHECK="✅ stop (کامل)"
+          elif [ "$FINISH_REASON" = "length" ]; then
+            FINISH_CHECK="❌ length (بریده)"
+          else
+            FINISH_CHECK="⚠️  $FINISH_REASON"
+          fi
+
+          # بررسی طول
+          CHAR_COUNT=$(echo "$CONTENT" | wc -c)
+          if [ "$CHAR_COUNT" -gt 50 ] && [ "$CHAR_COUNT" -lt 800 ]; then
+            LENGTH_CHECK="✅ $CHAR_COUNT کاراکتر"
+          elif [ "$CHAR_COUNT" -le 50 ]; then
+            LENGTH_CHECK="⚠️  $CHAR_COUNT کاراکتر (کوتاه)"
+          else
+            LENGTH_CHECK="⚠️  $CHAR_COUNT کاراکتر (بلند)"
+          fi
+
+          # تصمیم نهایی
+          if [ "$FINISH_REASON" = "stop" ] && \
+             echo "$CONTENT" | grep -qP '[\x{0600}-\x{06FF}]' 2>/dev/null && \
+             [ "$CHAR_COUNT" -gt 50 ]; then
+            DECISION="✅ PASS - مناسب برای پروژه"
+          else
+            DECISION="❌ FAIL - نیاز به بررسی"
+          fi
+
+          # ================================
+          # ذخیره متغیرها برای مرحله بعد
+          # ================================
+          echo "CONTENT<<EOF" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "HTTP_CODE=$HTTP_CODE" >> $GITHUB_OUTPUT
+          echo "FINISH_REASON=$FINISH_REASON" >> $GITHUB_OUTPUT
+          echo "MODEL_RETURNED=$MODEL_RETURNED" >> $GITHUB_OUTPUT
+          echo "TOTAL_TOKENS=$TOTAL_TOKENS" >> $GITHUB_OUTPUT
+          echo "PROMPT_TOKENS=$PROMPT_TOKENS" >> $GITHUB_OUTPUT
+          echo "COMPLETION_TOKENS=$COMPLETION_TOKENS" >> $GITHUB_OUTPUT
+          echo "REASONING_TOKENS=$REASONING_TOKENS" >> $GITHUB_OUTPUT
+          echo "PERSIAN_CHECK=$PERSIAN_CHECK" >> $GITHUB_OUTPUT
+          echo "FINISH_CHECK=$FINISH_CHECK" >> $GITHUB_OUTPUT
+          echo "LENGTH_CHECK=$LENGTH_CHECK" >> $GITHUB_OUTPUT
+          echo "DECISION=$DECISION" >> $GITHUB_OUTPUT
+
+          # ================================
+          # نمایش خلاصه در لاگ
+          # ================================
+          echo ""
+          echo "══════════════════════════════════════════════════════════"
+          echo "🧪 نتیجه تست gpt-4o-mini"
+          echo "══════════════════════════════════════════════════════════"
+          echo "📦 HTTP Status     : $HTTP_CODE"
+          echo "🤖 مدل استفاده‌شده : $MODEL_RETURNED"
+          echo "🏁 Finish Reason   : $FINISH_CHECK"
+          echo "🔢 توکن‌ها          : $TOTAL_TOKENS (پرس: $PROMPT_TOKENS, پاسخ: $COMPLETION_TOKENS)"
+          echo "🧠 توکن استدلال    : $REASONING_TOKENS"
+          echo "🔤 فارسی بودن      : $PERSIAN_CHECK"
+          echo "📏 طول خروجی       : $LENGTH_CHECK"
+          echo ""
+          echo "💬 خروجی مدل:"
+          echo "----------------------------------------"
+          echo "$CONTENT"
+          echo "----------------------------------------"
+          echo ""
+          echo "📊 تصمیم: $DECISION"
+          echo "══════════════════════════════════════════════════════════"
+
+      - name: "📝 ایجاد فایل نتیجه"
+        run: |
+          # ساخت پوشه اگر وجود ندارد
+          mkdir -p test_results
+
+          # نام فایل با timestamp
+          TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
+          OUTPUT_FILE="test_results/gpt4o_mini_result_${TIMESTAMP}.txt"
+
+          # نوشتن فایل
+          {
+            echo "╔══════════════════════════════════════════════════════════╗"
+            echo "║     تست کیفیت فارسی GapGPT — مدل gpt-4o-mini           ║"
+            echo "║     تاریخ: $(date '+%Y-%m-%d %H:%M:%S')                ║"
+            echo "╚══════════════════════════════════════════════════════════╝"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📊 خلاصه نتایج"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo ""
+            echo "🔸 HTTP Status        : ${{ steps.test_model.outputs.HTTP_CODE }}"
+            echo "🔸 مدل استفاده‌شده    : ${{ steps.test_model.outputs.MODEL_RETURNED }}"
+            echo "🔸 Finish Reason      : ${{ steps.test_model.outputs.FINISH_CHECK }}"
+            echo "🔸 توکن کل            : ${{ steps.test_model.outputs.TOTAL_TOKENS }}"
+            echo "🔸 توکن پرس           : ${{ steps.test_model.outputs.PROMPT_TOKENS }}"
+            echo "🔸 توکن پاسخ          : ${{ steps.test_model.outputs.COMPLETION_TOKENS }}"
+            echo "🔸 توکن استدلال       : ${{ steps.test_model.outputs.REASONING_TOKENS }}"
+            echo "🔸 فارسی بودن         : ${{ steps.test_model.outputs.PERSIAN_CHECK }}"
+            echo "🔸 طول خروجی          : ${{ steps.test_model.outputs.LENGTH_CHECK }}"
+            echo "🔸 تصمیم نهایی        : ${{ steps.test_model.outputs.DECISION }}"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📰 خبر ورودی"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "قیمت سکه امامی امروز در بازار تهران با افزایش ۲ میلیون و ۸۰۰ هزار تومانی نسبت به روز گذشته، وارد کانال ۵۸ میلیون تومان شد. قیمت هر گرم طلای ۱۸ عیار نیز با رشد ۱.۵ درصدی به ۴ میلیون و ۸۵۰ هزار تومان رسید. کارشناسان دلیل این افزایش را نوسانات بازار ارز و افزایش تقاضا در آستانه تعطیلات عنوان کردند."
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📝 System Prompt"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "تو یک دستیار خبری حرفه‌ای برای ربات روبیکا هستی. لطفاً خبر زیر را به صورت خلاصه، جذاب و در **حداکثر ۳ خط** بازنویسی کن. فقط متن بازنویسی‌شده را برگردان و هیچ توضیح اضافه‌ای نده."
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "💬 خروجی مدل (خلاصه خبر)"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "${{ steps.test_model.outputs.CONTENT }}"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📋 تحلیل"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo ""
+          } > "$OUTPUT_FILE"
+
+          # تحلیل بر اساس تصمیم
+          if [[ "${{ steps.test_model.outputs.DECISION }}" == *"PASS"* ]]; then
+            {
+              echo "✅ مدل gpt-4o-mini برای پروژه روبیکا مناسب است."
+              echo ""
+              echo "دلایل:"
+              echo "1. پاسخ کامل است (finish_reason=stop)"
+              echo "2. خروجی فارسی روان دارد"
+              echo "3. طول خروجی مناسب است"
+              echo "4. توکن استدلال ناچیز است (مدل reasoning-heavy نیست)"
+              echo ""
+              echo "پیشنهاد: می‌توانید processor.py را با این مدل بازنویسی کنید."
+            } >> "$OUTPUT_FILE"
+          else
+            {
+              echo "❌ مدل gpt-4o-mini نیاز به بررسی بیشتر دارد."
+              echo ""
+              echo "مشکلات احتمالی:"
+              echo "1. پاسخ بریده شده (finish_reason=length)"
+              echo "2. خروجی غیرفارسی یا کیفیت پایین"
+              echo "3. طول خروجی نامناسب"
+              echo ""
+              echo "پیشنهاد:"
+              echo "- max_tokens را افزایش دهید (مثلاً 1000)"
+              echo "- مدل دیگری تست کنید (gpt-4o یا claude-3-haiku)"
+              echo "- system prompt را بهینه کنید"
+            } >> "$OUTPUT_FILE"
+          fi
+
+          {
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📁 مسیر فایل: $OUTPUT_FILE"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          } >> "$OUTPUT_FILE"
+
+          echo "✅ فایل نتیجه در $OUTPUT_FILE ذخیره شد."
+
+      - name: "🚀 Commit و Push فایل نتیجه"
+        run: |
+          # تنظیم git
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # اضافه کردن فایل
+          git add test_results/
+
+          # commit کردن
+          git commit -m "test: add gpt-4o-mini test result $(date '+%Y%m%d_%H%M%S')" || echo "No changes to commit"
+
+          # push کردن
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: "📋 نمایش نتیجه نهایی"
+        run: |
+          echo ""
+          echo "══════════════════════════════════════════════════════════"
+          echo "🎉 تست کامل شد!"
+          echo "══════════════════════════════════════════════════════════"
+          echo ""
+          echo "📊 تصمیم: ${{ steps.test_model.outputs.DECISION }}"
+          echo ""
+          echo "📁 فایل نتیجه در ریپازیتوری commit شد:"
+          echo "   test_results/gpt4o_mini_result_*.txt"
+          echo ""
+          echo "💬 خروجی مدل:"
+          echo "----------------------------------------"
+          echo "${{ steps.test_model.outputs.CONTENT }}"
+          echo "----------------------------------------"
+          echo ""
+          echo "🔍 برای مشاهده فایل کامل، به ریپازیتوری مراجعه کنید."
+          echo "══════════════════════════════════════════════════════════"
