@@ -9,23 +9,23 @@ schedule:
 cron: ‘0 * * * *’
 jobs:
 
-build:
+run-bot:
 
 runs-on: ubuntu-latest
 
 steps:
 
-name: Checkout code
+name: Checkout repository
 uses: actions/checkout@v3
 
-name: Set up Python
+name: Setup Python
 uses: actions/setup-python@v4
 
 with:
 
-python-version: ‘3.9’
+python-version: “3.9”
 
-name: Install dependencies
+name: Install libraries
 run: |
 
 python -m pip install --upgrade pip
@@ -35,30 +35,26 @@ pip install feedparser openai requests urllib3
 name: Run news scraper
 run: python news.py
 
-name: Generate AI posts (Rubika)
+name: Generate AI posts
 env:
 
 GAPGPT_API_KEY: ${{ secrets.GAPGPT_API_KEY }}
 
-run: |
+run: python processor.py
 
-echo “🚀 Starting AI Generation…”
-
-python processor.py
-
-name: Commit and Push changes
+name: Commit files
 env:
 
 GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 run: |
 
-git config --global user.name “github-actions[bot]”
+git config --global user.name “github-actions”
 
-git config --global user.email “github-actions[bot]@users.noreply.github.com”
+git config --global user.email “actions@github.com”
 
 git add news.txt rubika_posts.txt
 
-git commit -m “Update news and AI posts” || echo “No changes to commit”
+git commit -m “auto update” || echo “nothing to commit”
 
 git push https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
