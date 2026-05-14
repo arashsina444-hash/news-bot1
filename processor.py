@@ -14,7 +14,7 @@ OUTPUT_FILE = "rubika_posts.txt"
 LOG_FILE = "run_log.txt"
 
 # مدل و API
-MODEL_NAME = "gpt-5.1-chat"
+MODEL_NAME = "gpt-5.3-chat-latest"
 API_KEY_ENV = "GAPGPT_API_KEY"
 
 # دو اندپوینت برای Failover
