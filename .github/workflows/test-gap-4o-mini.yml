@@ -1,0 +1,231 @@
+name: "🧪 تست کیفیت فارسی gpt-4o-mini (GapGPT)"
+
+on:
+  workflow_dispatch:  # فقط دستی اجرا بشه
+
+jobs:
+  test-and-save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "📡 تست مدل gpt-4o-mini و ذخیره نتیجه در فایل txt"
+        run: |
+          # ================================
+          # پیکربندی
+          # ================================
+          API_URL="https://api.gapgpt.app/v1/chat/completions"
+          MODEL="gpt-4o-mini"
+
+          # خبر ورودی (همون خبر قبلی)
+          NEWS_TEXT="قیمت سکه امامی امروز در بازار تهران با افزایش ۲ میلیون و ۸۰۰ هزار تومانی نسبت به روز گذشته، وارد کانال ۵۸ میلیون تومان شد. قیمت هر گرم طلای ۱۸ عیار نیز با رشد ۱.۵ درصدی به ۴ میلیون و ۸۵۰ هزار تومان رسید. کارشناسان دلیل این افزایش را نوسانات بازار ارز و افزایش تقاضا در آستانه تعطیلات عنوان کردند."
+
+          # System Prompt
+          SYSTEM_PROMPT="تو یک دستیار خبری حرفه‌ای برای ربات روبیکا هستی. لطفاً خبر زیر را به صورت خلاصه، جذاب و در **حداکثر ۳ خط** بازنویسی کن. فقط متن بازنویسی‌شده را برگردان و هیچ توضیح اضافه‌ای نده."
+
+          # نام فایل خروجی
+          OUTPUT_FILE="test_result_gpt4o_mini.txt"
+          TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+
+          # ================================
+          # شروع نوشتن فایل خروجی
+          # ================================
+          {
+            echo "╔══════════════════════════════════════════════════════════╗"
+            echo "║     تست کیفیت فارسی GapGPT — مدل gpt-4o-mini           ║"
+            echo "╚══════════════════════════════════════════════════════════╝"
+            echo ""
+            echo "📅 زمان اجرا: $TIMESTAMP"
+            echo "🌐 API URL  : $API_URL"
+            echo "🤖 مدل      : $MODEL"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📰 خبر ورودی (Original):"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "$NEWS_TEXT"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📝 System Prompt:"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "$SYSTEM_PROMPT"
+            echo ""
+            echo "⌛ در حال ارسال درخواست به GapGPT..."
+            echo ""
+          } > "$OUTPUT_FILE"
+
+          # ================================
+          # ساخت payload و ارسال درخواست
+          # ================================
+          PAYLOAD=$(jq -n \
+            --arg model "$MODEL" \
+            --arg system "$SYSTEM_PROMPT" \
+            --arg user "$NEWS_TEXT" \
+            '{
+              model: $model,
+              messages: [
+                {role: "system", content: $system},
+                {role: "user", content: $user}
+              ],
+              temperature: 0.7,
+              max_tokens: 500
+            }')
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$API_URL" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.GAPGPT_API_KEY }}" \
+            -d "$PAYLOAD" \
+            --connect-timeout 30 \
+            --max-time 120)
+
+          # جدا کردن status code از body
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          # ================================
+          # استخراج اطلاعات از JSON
+          # ================================
+          CONTENT=$(echo "$BODY" | jq -r '.choices[0].message.content' 2>/dev/null)
+          FINISH_REASON=$(echo "$BODY" | jq -r '.choices[0].finish_reason' 2>/dev/null)
+          MODEL_RETURNED=$(echo "$BODY" | jq -r '.model' 2>/dev/null)
+          TOTAL_TOKENS=$(echo "$BODY" | jq -r '.usage.total_tokens' 2>/dev/null)
+          PROMPT_TOKENS=$(echo "$BODY" | jq -r '.usage.prompt_tokens' 2>/dev/null)
+          COMPLETION_TOKENS=$(echo "$BODY" | jq -r '.usage.completion_tokens' 2>/dev/null)
+          REASONING_TOKENS=$(echo "$BODY" | jq -r '.usage.completion_tokens_details.reasoning_tokens // 0' 2>/dev/null)
+
+          # ================================
+          # ادامه نوشتن فایل خروجی
+          # ================================
+          {
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📦 پاسخ خام JSON از سرور (HTTP $HTTP_CODE):"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "$BODY" | jq . 2>/dev/null || echo "$BODY"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📊 تحلیل نتایج"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo ""
+            echo "🔸 HTTP Status     : $HTTP_CODE"
+            echo "🔸 مدل استفاده‌شده : $MODEL_RETURNED"
+            echo "🔸 Finish Reason   : $FINISH_REASON"
+            echo "🔸 Prompt Tokens   : $PROMPT_TOKENS"
+            echo "🔸 Completion      : $COMPLETION_TOKENS"
+            echo "🔸 Reasoning       : $REASONING_TOKENS"
+            echo "🔸 Total Tokens    : $TOTAL_TOKENS"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "💬 خروجی نهایی مدل (متن بازنویسی‌شده):"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "$CONTENT"
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "✅ بررسی کیفیت"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo ""
+          } >> "$OUTPUT_FILE"
+
+          # ================================
+          # بررسی‌ها
+          # ================================
+
+          # بررسی ۱: فارسی بودن
+          if echo "$CONTENT" | grep -qP '[\x{0600}-\x{06FF}]' 2>/dev/null || \
+             echo "$CONTENT" | grep -q '[آ-ی]' 2>/dev/null; then
+            echo "   ✅ فارسی بودن       : بله — شامل حروف فارسی" >> "$OUTPUT_FILE"
+          else
+            echo "   ⚠️  فارسی بودن       : خیر — فاقد حروف فارسی" >> "$OUTPUT_FILE"
+          fi
+
+          # بررسی ۲: finish_reason
+          if [ "$FINISH_REASON" = "stop" ]; then
+            echo "   ✅ پایان پاسخ       : طبیعی (stop)" >> "$OUTPUT_FILE"
+          elif [ "$FINISH_REASON" = "length" ]; then
+            echo "   ❌ پایان پاسخ       : بریده شد (length) — پاسخ ناقص" >> "$OUTPUT_FILE"
+          else
+            echo "   ⚠️  پایان پاسخ       : $FINISH_REASON" >> "$OUTPUT_FILE"
+          fi
+
+          # بررسی ۳: طول خروجی
+          CHAR_COUNT=$(echo "$CONTENT" | wc -c)
+          if [ "$CHAR_COUNT" -gt 50 ] && [ "$CHAR_COUNT" -lt 800 ]; then
+            echo "   ✅ طول خروجی        : $CHAR_COUNT کاراکتر — مناسب" >> "$OUTPUT_FILE"
+          elif [ "$CHAR_COUNT" -le 50 ]; then
+            echo "   ⚠️  طول خروجی        : $CHAR_COUNT کاراکتر — خیلی کوتاه" >> "$OUTPUT_FILE"
+          else
+            echo "   ⚠️  طول خروجی        : $CHAR_COUNT کاراکتر — نسبتاً بلند" >> "$OUTPUT_FILE"
+          fi
+
+          # بررسی ۴: توکن reasoning
+          if [ "$REASONING_TOKENS" -gt 100 ]; then
+            echo "   ⚠️  توکن استدلال     : $REASONING_TOKENS — مدل reasoning زیادی مصرف کرده" >> "$OUTPUT_FILE"
+          else
+            echo "   ✅ توکن استدلال     : $REASONING_TOKENS — ناچیز (مدل استاندارد)" >> "$OUTPUT_FILE"
+          fi
+
+          # بررسی ۵: وجود کلمات کلیدی خبر در خروجی
+          if echo "$CONTENT" | grep -q "سکه"; then
+            echo "   ✅ ارتباط با خبر    : بله — کلمه «سکه» در خروجی وجود دارد" >> "$OUTPUT_FILE"
+          else
+            echo "   ⚠️  ارتباط با خبر    : نامشخص — کلمات کلیدی خبر یافت نشد" >> "$OUTPUT_FILE"
+          fi
+
+          {
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🏁 نتیجه‌گیری نهایی"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo ""
+          } >> "$OUTPUT_FILE"
+
+          # تصمیم‌گیری خودکار
+          if [ "$FINISH_REASON" = "stop" ] && \
+             echo "$CONTENT" | grep -qP '[\x{0600}-\x{06FF}]' 2>/dev/null && \
+             [ "$CHAR_COUNT" -gt 50 ]; then
+            echo "✅ مدل gpt-4o-mini برای خلاصه‌سازی خبری فارسی مناسب است." >> "$OUTPUT_FILE"
+            echo "   → می‌توان processor.py را با این مدل بازنویسی کرد." >> "$OUTPUT_FILE"
+            DECISION="PASS"
+          else
+            echo "❌ مدل gpt-4o-mini اشکال دارد. نیاز به بررسی بیشتر." >> "$OUTPUT_FILE"
+            echo "   → پیشنهاد: تست مدل بعدی (gpt-4o یا claude-3-haiku)" >> "$OUTPUT_FILE"
+            DECISION="FAIL"
+          fi
+
+          echo "" >> "$OUTPUT_FILE"
+          echo "╔══════════════════════════════════════════════════════════╗" >> "$OUTPUT_FILE"
+          echo "║                   پایان گزارش                           ║" >> "$OUTPUT_FILE"
+          echo "╚══════════════════════════════════════════════════════════╝" >> "$OUTPUT_FILE"
+
+          # ================================
+          # نمایش فایل در لاگ (برای preview سریع)
+          # ================================
+          cat "$OUTPUT_FILE"
+
+          # ================================
+          # تنظیم متغیر خروجی برای مرحله بعد
+          # ================================
+          echo "DECISION=$DECISION" >> $GITHUB_ENV
+          echo "OUTPUT_FILE=$OUTPUT_FILE" >> $GITHUB_ENV
+
+      # ================================
+      # آپلود فایل txt به عنوان Artifact
+      # ================================
+      - name: "📤 آپلود فایل نتیجه (txt)"
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-result-gpt4o-mini
+          path: test_result_gpt4o_mini.txt
+          retention-days: 7
+
+      # ================================
+      # خلاصه نهایی در Summary
+      # ================================
+      - name: "📋 نمایش در GitHub Step Summary"
+        run: |
+          {
+            echo "## 🧪 نتیجه تست gpt-4o-mini"
+            echo ""
+            echo "| پارامتر | مقدار |"
+            echo "|---------|-------|"
+            echo "| تصمیم خودکار | \`$DECISION\` |"
+            echo "| فایل خروجی | \`test_result_gpt4o_mini.txt\` (در Artifacts) |"
+            echo ""
+            echo "📥 **فایل txt را از بخش Artifacts همین Workflow دانلود کنید.**"
+          } >> $GITHUB_STEP_SUMMARY
