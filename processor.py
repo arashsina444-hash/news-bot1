@@ -1,72 +1,95 @@
-import os
+import requests
+import json
 import time
-from openai import OpenAI
+import os
+from datetime import datetime
 
-def read_file(path):
-    if not os.path.exists(path):
-        return None
-    with open(path, "r", encoding="utf-8") as f:
-        return f.read()
+API_URLS = [
+    "https://api.gapgpt.app/v1/chat/completions",
+    "https://api.gapgpt.com/v1/chat/completions"
+]
 
-def write_file(path, content):
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(content)
+API_KEY = os.getenv("GAPGPT_API_KEY")
 
-def try_request(base_url, api_key, news_content):
-    client = OpenAI(base_url=base_url, api_key=api_key)
+OUTPUT_FILE = "rubika_posts.txt"
+LOG_FILE = "run_log.txt"
 
-    for attempt in range(1, 4):
-        print(f"🔁 [{base_url}] Attempt {attempt}/3 ...")
-        try:
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "Rewrite the news for Rubika posts."},
-                    {"role": "user", "content": news_content},
-                ]
-            )
-            return response.choices[0].message.content
-        except Exception as e:
-            print(f"❌ ERROR on {base_url} (attempt {attempt}): {e}")
-            time.sleep(2)
+
+def log(message):
+    timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+
+def call_api(payload):
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    for url in API_URLS:
+        for attempt in range(1, 4):
+            try:
+                log(f"Trying: {url} | Attempt {attempt}")
+                response = requests.post(url, json=payload, headers=headers, timeout=15)
+
+                if response.status_code == 200:
+                    log(f"SUCCESS from {url}")
+                    return response.text
+
+                log(f"Non-200 Response {response.status_code}: {response.text}")
+
+            except Exception as e:
+                log(f"Error: {str(e)}")
+
+            time.sleep(5 * attempt)
 
     return None
 
 
+def create_fallback_output():
+    fallback_text = "❗ خطا در اتصال به GapGPT — پاسخ دریافت نشد.\n"
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write(fallback_text)
+
+    log("Fallback output created due to API failure.")
+
+
 def main():
-    print("🚀 Starting AI Generation...")
+    log("=== PROCESSOR STARTED ===")
 
-    api_key = os.getenv("GAPGPT_API_KEY")
-    if not api_key:
-        write_file("rubika_posts.txt", "API KEY ERROR")
+    prompt_text = (
+        "یک پست ۵ جمله‌ای جذاب، کوتاه و مناسب روبیکا بنویس."
+    )
+
+    payload = {
+        "model": "gpt-5.2-chat",
+        "messages": [
+            {"role": "system", "content": "You are a helpful AI assistant."},
+            {"role": "user", "content": prompt_text}
+        ],
+        "max_tokens": 200
+    }
+
+    api_result = call_api(payload)
+
+    if api_result is None:
+        create_fallback_output()
         return
 
-    news = read_file("news.txt")
-    if not news:
-        write_file("rubika_posts.txt", "NO NEWS PROVIDED")
-        return
+    try:
+        result_json = json.loads(api_result)
+        text = result_json["choices"][0]["message"]["content"].strip()
 
-    urls = [
-        "https://api.gapgpt.app/v1",
-        "https://api.gapgpt.com/v1"
-    ]
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            f.write(text)
 
-    result = None
+        log("Output file written successfully.")
 
-    for url in urls:
-        print(f"🌐 Trying API endpoint: {url}")
-        result = try_request(url, api_key, news)
+    except Exception as e:
+        log(f"JSON Parse Error: {str(e)}")
+        create_fallback_output()
 
-        if result:  
-            break  
-
-    if not result:
-        print("❌ Both endpoints failed!")
-        write_file("rubika_posts.txt", "GAPGPT FAILED")
-        return
-
-    write_file("rubika_posts.txt", result)
-    print("🎉 DONE. Output saved.")
 
 if __name__ == "__main__":
     main()
