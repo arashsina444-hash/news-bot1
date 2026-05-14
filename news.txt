@@ -1,5 +1,73 @@
 Latest Tech News
 
+Title: How California Lets Teachers Reported for Sexual Harassment or Misconduct Keep Teaching
+Summary: California’s teacher-licensing process often keeps disciplinary findings out of public view, allowing educators found by school districts to have committed sexual harassment or other misconduct to retain credentials and, in some cases, return to classrooms. One teacher, Jason Agan, was deemed unfit to teach after student complaints, yet his case illustrates how the system can delay or avoid revocation. [propublica.org]
+Link: https://flipso.com/p/3qy9t331r?ref=rss
+------------------------------------------------------------
+Title: Avoiding and reducing microplastic false positives from dry glove contact
+Summary: Dry nitrile and latex laboratory gloves can release stearate residues that mimic microplastics in infrared and Raman analyses, causing inflated counts. The authors report workflows and spectral libraries to distinguish glove contamination from true microplastics and recommend cleanroom nitrile gloves to reduce false positives, especially for particles under 10 µm. [pubs.rsc.org]
+Link: https://flipso.com/p/12mbhleh9?ref=rss
+------------------------------------------------------------
+Title: MacBook Neo Deep Dive: Benchmarks, Wafer Economics, and the 8GB Gamble
+Summary: A detailed look at the MacBook Neo’s A18 Pro performance, including Geekbench results across different thermal states, comparisons with M1 and M4 Macs, and the tradeoffs behind Apple’s $599 pricing. It also covers sustained-load throttling, memory constraints, and the economics that make the machine possible. [jdhodges.com]
+Link: https://flipso.com/p/0b3d3i99q?ref=rss
+------------------------------------------------------------
+Title: 6 Reasons to Be (Cautiously) Optimistic About Movies in 2026
+Summary: Six data-backed signs that moviegoing may be rebounding: box office is improving, more films are returning to theaters, online interest is rising, Netflix is warming to theatrical releases, the Oscars may regain relevance, and physical media is reviving. [statsignificant.com]
+Link: https://flipso.com/p/wcj3oolq2?ref=rss
+------------------------------------------------------------
+Title: Meet the Maker: Mari Hunt
+Summary: Mari Hunt is an artist and printmaker in West Sussex whose bold, colourful work begins with quirky illustrations and is reworked into screen prints and iPad paintings. Supported by her mum and mentor Jo Telling, she has built Mari Hunt Artworks to share her creativity more widely while taking part in local arts projects and community learning opportunities. [handprinted.co.uk]
+Link: https://flipso.com/p/9uhti9mxm?ref=rss
+------------------------------------------------------------
+Title: Kempelen chess puzzle
+Summary: A classic chess problem: place four black queens and one black bishop so every square on the board is covered by attack, leaving no safe square for the white king. [ardoedo.it]
+Link: https://flipso.com/p/3lz29gj9n?ref=rss
+------------------------------------------------------------
+Title: Marco Polo: Range-Only Relative Localization with an EKF
+Summary: A technical walkthrough of using IMU and ultra-wideband sensors to estimate relative position and bearing between two devices. It compares multi-antenna UWB, external trilateration, and Kalman filters, then builds an extended Kalman filter for range-only localization. [jackhogan.me]
+Link: https://flipso.com/p/hkncllqiq?ref=rss
+------------------------------------------------------------
+Title: Princeton faculty mandate proctoring for in-person exams
+Summary: Princeton faculty approved a policy requiring proctoring for all in-person exams starting July 1, the biggest change to the honor system since 1893. The move keeps the student-run Honor Committee in place but adds instructor supervision as a witness, with details such as proctor-to-student ratios still to be finalized. [dailyprincetonian.com]
+Link: https://flipso.com/p/s19axay4p?ref=rss
+------------------------------------------------------------
+Title: Ben Morea in Exarchia: A Eulogy and Paean to Freedom
+Summary: Tasos Sagris reflects on Ben Morea’s visit to Exarchia and the parallel between the 1960s Motherfuckers and the neighborhood’s anarchist, refugee-solidarity culture. The piece traces Morea’s vision of liberated social zones, collective life, and revolt against alienation, while mourning both his death and a disappearing world of radical possibility. [crimethinc.com]
+Link: https://flipso.com/p/nvleg01er?ref=rss
+------------------------------------------------------------
+Title: “Not Medically Necessary”: Inside the Company Helping U.S. Health Insurers Deny…
+Summary: ProPublica investigates EviCore, a major prior-authorization vendor used by insurers including UnitedHealthcare, Aetna, and Cigna. The story says the company’s algorithms, medical guidelines, and contract incentives can increase denials and delay care, often for procedures recommended by doctors. [propublica.org]
+Link: https://flipso.com/p/232x3m6yb?ref=rss
+------------------------------------------------------------
+Title: How ASML took over the world
+Summary: The strange path to global monopoly [worksinprogress.news]
+Link: https://flipso.com/p/4a5ca5zga?ref=rss
+------------------------------------------------------------
+Title: The Great Memory Panic of 2026
+Summary: Horace Dediu discusses how surging memory prices could affect Apple’s supply strategy, margins, and bargaining power, and why volatility may ultimately favor larger buyers over smaller competitors. [asymco.com]
+Link: https://flipso.com/p/bfsa2xia7?ref=rss
+------------------------------------------------------------
+Title: Heritability of human lifespan is about 50% when heritability is redefined
+Summary: Ratios will be ratios. [dynomight.net]
+Link: https://flipso.com/p/i7wnwfur3?ref=rss
+------------------------------------------------------------
+Title: At the edge of a warming world
+Summary: Cape Cod is already seeing the effects of climate change: faster erosion, stronger storms, rising seas, and homes, beaches, and businesses disappearing inland. Reporting across the Outer Cape follows the people measuring, confronting, and living with that loss. [apps.bostonglobe.com]
+Link: https://flipso.com/p/gl5fulgx1?ref=rss
+------------------------------------------------------------
+Title: Warmer Waters Bring Great White Sharks to Southern California
+Summary: Southern California has seen a spike in great white shark sightings during unseasonably warm spring weather. Experts expect more unusual heat — and more sharks — in the months ahead, and say the trend reflects warming waters, abundant prey, and stronger protections for the species. [e360.yale.edu]
+Link: https://flipso.com/p/4tjn3iqqz?ref=rss
+------------------------------------------------------------
+Title: People of Penn Station, NYC in 1958
+Summary: Louis Stettner’s black-and-white photographs capture the people moving through Pennsylvania Station in 1958, just before the original Beaux-Arts terminal was demolished. His images focus on the light, motion, and everyday drama of a public space in transition. [flashbak.com]
+Link: https://flipso.com/p/j01k2nkwv?ref=rss
+------------------------------------------------------------
+Title: Is “Good Friction” a Bad Idea?
+Summary: A reflection on whether “friction” is a useful idea or a vague, potentially misleading way to think about making life harder or better. [thedeletedscenes.com]
+Link: https://flipso.com/p/d42vnsm83?ref=rss
+------------------------------------------------------------
 Title: The Boring Part of Bell Labs
 Summary: A conversation with a former Bell Labs employee about the applied side of the company: PBX systems, queueing simulations, inventory control, and practical tools like a slide rule for sales estimates. It also touches on Bell Labs’ One Year On Campus program, management culture, hiring, and how the Holmdel division supported the famous research operation. [acesounderglass.com]
 Link: https://flipso.com/p/74dvz1hl5?ref=rss
@@ -51,72 +119,4 @@ Link: https://flipso.com/p/x9qrfedgz?ref=rss
 Title: They Photographed an Execution in Bosnia. Did They Influence the Killer?
 Summary: A three-year investigation examines how Reuters photos of a Bosnian war crime were made, why they were published, and the controversy they later provoked. [newlinesmag.com]
 Link: https://flipso.com/p/40c8qzy44?ref=rss
-------------------------------------------------------------
-Title: Referer reality
-Summary: On web analytics, email and app traffic often shows up as Direct or Unknown because many apps don’t send a Referrer header. Robin Sloan argues that adding a custom query string to outgoing links can be a useful courtesy, making the source legible for site owners without relying on analytics. [robinsloan.com]
-Link: https://flipso.com/p/qfz79bvu2?ref=rss
-------------------------------------------------------------
-Title: These Wild Young People
-Summary: Asterisks issue page for a culture piece by Tessa Augsberger, Elan Kluger, and Rufus Knuppel. The page currently says “Coming soon,” so there’s no article text yet. [asteriskmag.com]
-Link: https://flipso.com/p/j2h844ivh?ref=rss
-------------------------------------------------------------
-Title: How to Make Your Text Look Futuristic
-Summary: A playful typography breakdown of the recurring design tricks used to make movie titles and logos feel futuristic, from slanted sans-serifs and exaggerated kerning to brushed metal, embossing, and star fields. [typesetinthefuture.com]
-Link: https://flipso.com/p/24lpen6gi?ref=rss
-------------------------------------------------------------
-Title: Saving New Orleans Is Not Optional
-Summary: A new study suggests we should simply give up on the city's long-term future and begin to relocate the population. This is a morally indefensible proposal. New Orleans can and must be saved. [currentaffairs.org]
-Link: https://flipso.com/p/pa3xlu1ex?ref=rss
-------------------------------------------------------------
-Title: The slippery protein problem
-Summary: How a new class of drugs is beginning to make previously undruggable proteins, including RAS, accessible in pancreatic cancer and other hard-to-treat cancers. [worksinprogress.co]
-Link: https://flipso.com/p/hcf6sixt0?ref=rss
-------------------------------------------------------------
-Title: Tell New York Times, The Atlantic, and USA Today to keep journalists’ work in the…
-Summary: A petition urging major news outlets to allow the Internet Archive’s Wayback Machine to keep preserving their reporting, so journalism remains accessible for fact-checking and historical record. [savethearchive.com]
-Link: https://flipso.com/p/xib6kivwp?ref=rss
-------------------------------------------------------------
-Title: SOM's supertall 175 Park Avenue gets updated permits
-Summary: Skidmore, Owings & Merrill has updated the design for 175 Park Avenue, a 1,581-foot mixed-use tower planned next to Grand Central Terminal in Midtown Manhattan. The project would replace the Grand Hyatt hotel and include offices, a hotel, stepped setbacks with landscaped terraces, and a new transit hall expanding circulation at Grand Central. [archinect.com]
-Link: https://flipso.com/p/omedtcx6a?ref=rss
-------------------------------------------------------------
-Title: How Kraftwerk’s 1976 track Radioactivity became an anti-nuclear anthem
-Summary: Kraftwerk’s 1976 single grew from a pioneering electronic track into a later anti-nuclear statement, especially in its 1991 reworking. Fifty years on, it remains one of the band’s most politically charged and influential songs. [bbc.com]
-Link: https://flipso.com/p/uofpdvra2?ref=rss
-------------------------------------------------------------
-Title: Harrison Ford tells grads to find purpose in a messy world
-Summary: At Arizona State University’s commencement, Harrison Ford urged graduates to turn their talent and ambition toward meaningful work, especially in response to climate and conservation challenges. He said purpose can come from using your passions to build, lead, and help others. [conservation.org]
-Link: https://flipso.com/p/xr7914gxw?ref=rss
-------------------------------------------------------------
-Title: Attending Cornell While Your Father Is in Ice Detention
-Summary: Klarissa López Guillen’s father was detained by ICE during her second semester at Cornell. She’s had to drop a class, pick up a job, and navigate a complicated financial aid system in order to remain enrolled in the university. [collegetownmagazine.com]
-Link: https://flipso.com/p/p1zrumtng?ref=rss
-------------------------------------------------------------
-Title: On Rendering the Sky, Sunsets, and Planets
-Summary: A deep dive into real-time atmospheric rendering in the browser with shaders, covering raymarching, Rayleigh and Mie scattering, ozone absorption, and how to extend the same model from a sky dome to a planet atmosphere. [blog.maximeheckel.com]
-Link: https://flipso.com/p/cpqwmavfm?ref=rss
-------------------------------------------------------------
-Title: ‘I couldn’t breathe’: France’s killer seaweed and the fight over Brittany’s beaches
-Summary: After deaths on Brittany’s beaches, a bereaved family spent years trying to prove that rotting seaweed releasing hydrogen sulphide was to blame. The story follows the people, lawsuits, and official resistance around France’s recurring toxic algal blooms. [theguardian.com]
-Link: https://flipso.com/p/i9opay88g?ref=rss
-------------------------------------------------------------
-Title: The Return of Culture
-Summary: Robin Hanson examines changing influence among capital, culture, and states across historical periods, using LLM-based estimates to argue that culture has recently regained dominance after a long period of state power. [overcomingbias.com]
-Link: https://flipso.com/p/lbjcdsjj0?ref=rss
-------------------------------------------------------------
-Title: Introducing The Moth Story Map
-Summary: The Moth Education team introduces the Story Map, a five-part structure for shaping a Moth story, and shows how it works in a video featuring Dante Jackson’s story “The Prom.” The post also includes information about applications for the All City residency for NYC high school students and the Moth Teacher Institute for educators. [themoth.org]
-Link: https://flipso.com/p/68y8femc6?ref=rss
-------------------------------------------------------------
-Title: Schliemann found Troy by destroying it
-Summary: Heinrich Schliemann’s 1873 dig at Hisarlık uncovered a hoard he claimed as Priam’s Treasure, but his trench cut through multiple ancient layers and missed the Bronze Age city most likely tied to Homer’s Troy. The gold was smuggled out of the Ottoman Empire, fought over in court, then spent decades moving between Berlin, a Berlin flak tower, and a Moscow museum basement. [storica.club]
-Link: https://flipso.com/p/zxqvwc6ao?ref=rss
-------------------------------------------------------------
-Title: The Surprisingly Long Life of the Vacuum Tube
-Summary: Vacuum tubes were once a foundational technology for radios, telephones, TVs, early computers, X-ray machines, radar, and microwave generation. Despite being largely replaced by semiconductors, several tube-based technologies still matter today, including magnetrons, gas-discharge devices, and gyrotrons. [construction-physics.com]
-Link: https://flipso.com/p/gqr0m3w2j?ref=rss
-------------------------------------------------------------
-Title: Meet the Ham Sandwich Salad
-Summary: A romaine salad with ham, cornichons, croutons, Parmesan, and a mustardy mayo dressing, with crisped prosciutto added on top for extra crunch. [tastecooking.com]
-Link: https://flipso.com/p/1w80yqnw0?ref=rss
 ------------------------------------------------------------
