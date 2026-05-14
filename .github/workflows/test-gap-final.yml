@@ -1,0 +1,48 @@
+name: "تست نهایی GapGPT (URL و مدل درست)"
+
+on:
+  workflow_dispatch:  # فقط دستی اجرا بشه
+
+jobs:
+  test-gap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: " تست اتصال به GapGPT با URL و مدل درست"
+        run: |
+          echo "=== تست GapGPT API (آخرین شانس) ==="
+          
+          # URL درست طبق سایت GapGPT
+          API_URL="https://api.gapgpt.app/v1/chat/completions"
+          
+          # مدل تایید شده: gemini-2.5-flash
+          MODEL="gemini-2.5-flash"
+          
+          echo "URL: $API_URL"
+          echo "Model: $MODEL"
+          echo "-----------------------------"
+          
+          # ارسال درخواست با curl
+          # توجه: ۶۰ ثانیه timeout و نمایش هدرهای پاسخ
+          curl -v -X POST "$API_URL" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.GAPGPT_API_KEY }}" \
+            -d "{
+              \"model\": \"$MODEL\",
+              \"messages\": [{\"role\": \"user\", \"content\": \"Say exactly: GAPGPT_WORKS\"}]
+            }" \
+            --connect-timeout 30 \
+            --max-time 120 \
+            2>&1 | tee /tmp/gap_response.txt
+          
+          echo ""
+          echo "=== تحلیل پاسخ ==="
+          
+          # بررسی وجود GAPGPT_WORKS در پاسخ
+          if grep -q "GAPGPT_WORKS" /tmp/gap_response.txt; then
+            echo "✅ SUCCESS: GapGPT API کاملاً در دسترس است و پاسخ صحیح داد."
+            echo "   می‌توانیم با خیال راحت از GapGPT استفاده کنیم."
+          else
+            echo "❌ FAILED: نتوانستیم پاسخ معتبر از GapGPT بگیریم."
+            echo "   ممکن است از GitHub Actions قابل دسترس نباشد."
+            echo "   پاسخ کامل در بالا نمایش داده شده - لطفاً ارسال کن."
+          fi
